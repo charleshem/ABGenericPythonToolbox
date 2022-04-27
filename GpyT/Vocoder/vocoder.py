@@ -17,7 +17,7 @@ from .vocoderTools import ElFieldToActivity,ActivityToPower, NeurToBinMatrix, ge
 
 def vocoderFunc(electrodogram,**kwargs):
 
-    audioFs = kwargs.get('audioFs',48000)
+    audioFs = kwargs.get('audioFs',16000)
     saveOutput = kwargs.get('saveOutput',False)
     outputFile = kwargs.get('outputFile',None)
     
@@ -176,7 +176,7 @@ def vocoderFunc(electrodogram,**kwargs):
     blkSize = mAvg.astype(int)  
             
 # audio output frequency
-    audioFs = np.ceil(tAvg*audioFs)/tAvg
+    #audioFs = np.ceil(tAvg*audioFs)/tAvg
     audioTs = 1/audioFs
     tWin = 2*tAvg
     nFFT = np.round(tWin/audioTs).astype(int)        
@@ -277,10 +277,11 @@ def vocoderFunc(electrodogram,**kwargs):
         amplitude = np.iinfo(np.int16).max
         audioToSave = audioOut*amplitude
         
-        scipy.io.wavfile.write(outputFile,audioFs.astype(int),np.int16(audioToSave))            
+        scipy.io.wavfile.write(outputFile,audioFs,np.int16(audioToSave))            
         
            
-    return(audioOut,audioFs.astype(int))
+    #return(audioOut,audioFs.astype(int))
+    return(audioOut,audioFs)
     
 
     

@@ -22,9 +22,8 @@ OUTPUTS:
 
 
 """
-
 import numpy as np
-import GpyT
+import ABGenericPythonToolbox.GpyT as GpyT
 
 
 def processingPipeline(sourceFile,**kwargs):
@@ -232,15 +231,15 @@ def processingPipeline(sourceFile,**kwargs):
 
     # convert amplitude words to simulated electrodogram for vocoder imput
     results['elGram'] = GpyT.f120ElectrodogramFunc(parElectrodogram,results['sig_ft_ampWords'])    
-   
+    
     # # load output of default processing strategy to compare with  results['elGram'], return errors if data matrix is an invalid shape/unacceptable to the vocoder,save results['elGram'] to a file
-    results['outputSaved'] = GpyT.validateOutputFunc(parValidate,results['elGram'],results['sourceName']); 
+    #results['outputSaved'] = GpyT.validateOutputFunc(parValidate,results['elGram'],results['sourceName']); 
     
     # process electrodogram potentially saving as a file (change to saveOutput=True)
     if vocoderOutputFile is None:
-        results['audioOut'],results['audioFs'] = GpyT.vocoderFunc(results['elGram'],saveOutput=False)
+        results['audioOut'],results['audioFs'] = GpyT.vocoderFunc(results['elGram'],saveOutput=False,audioFs=16000)
     else:
-        results['audioOut'],results['audioFs'] = GpyT.vocoderFunc(results['elGram'],saveOutput=True,outputFile=vocoderOutputFile)
+        results['audioOut'],results['audioFs'] = GpyT.vocoderFunc(results['elGram'],saveOutput=True,outputFile=vocoderOutputFile,audioFs=16000)
     
 
     
