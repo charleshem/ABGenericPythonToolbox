@@ -5,9 +5,11 @@ Created on Thu Sep  5 11:04:47 2019
 @author: beimx004
 """
 import numpy as np
+import soundfile as sf
 from pathlib import Path
 from scipy.io.wavfile import read as wavread
 from nnresample import resample
+
 
 
 
@@ -15,8 +17,11 @@ def readWavFunc(par):
     name = par['parent']['wavFile']
     stratFs = par['parent']['fs']
 
-    
-    [srcFs,signalIn] = wavread(name)    
+    if Path(name).suffix == '.wav':
+        [srcFs,signalIn] = wavread(name) # returns fs, data
+    elif Path(name).suffix == '.flac':
+        [signalIn,srcFs] = sf.read(name) # returns data, fs 
+        
     # rescale from integer words to float for audio processing
     
     if signalIn.dtype == 'uint8':
